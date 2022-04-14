@@ -1,13 +1,11 @@
 {
   "name": "@navvi/slashauth-react-client",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React client for SlashAuth. Add auth to your web3 dApp",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "rimraf dist && rollup -c --watch",
-    "start": "npm run dev",
-    "build": "rimraf dist && rollup -m -c --environment NODE_ENV:production && npm run test:es-check",
-    "build:stats": "npm run build -- --environment WITH_STATS:true && open stats.html",
+    "build": "rm -rf dist/ && tsc",
     "_postinstall": "husky install",
     "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "lint": "npx eslint --ext .ts --ext .tsx --max-warnings 0 .",

@@ -42,4 +42,5 @@ export {
   MfaRequiredError,
 } from './errors';
 
-export { ICache, LocalStorageCache, InMemoryCache, Cacheable } from './cache';
+export type { ICache, Cacheable } from './cache';
+export { LocalStorageCache, InMemoryCache } from './cache';

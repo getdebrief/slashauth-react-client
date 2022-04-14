@@ -1,15 +1,29 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
-    "sourceMap": true,
-    "declaration": true,
-    "declarationDir": "./dist/typings",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
     "moduleResolution": "node",
-    "noImplicitAny": true,
-    "downlevelIteration": true,
-    "jsx": "react-jsx"
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "jsx": "react-jsx",
+    "outDir": "dist",
+    "declaration": true,
   },
-  "exclude": ["./__tests__", "./dist/typings", "**/__mocks__/**"]
+  "compileOnSave": true,
+  "include": [
+    "src"
+  ],
+  "exclude": ["node_modules", "**/__tests__/*", "./dist/typings",]
 }

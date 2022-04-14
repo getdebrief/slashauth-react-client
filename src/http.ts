@@ -3,7 +3,7 @@ import {
   DEFAULT_SILENT_TOKEN_RETRY_COUNT,
 } from './constants';
 
-import { sendMessage } from './worker/worker.utils';
+// import { sendMessage } from './worker/worker.utils';
 import { FetchOptions } from './global';
 import { GenericError, MfaRequiredError } from './errors';
 
@@ -43,32 +43,32 @@ const fetchWithoutWorker = async (
   });
 };
 
-const fetchWithWorker = async (
-  fetchUrl: string,
-  audience: string,
-  scope: string,
-  fetchOptions: FetchOptions,
-  timeout: number,
-  worker?: Worker,
-  useFormData?: boolean
-) => {
-  if (!worker) {
-    return;
-  }
-  return sendMessage(
-    {
-      auth: {
-        audience,
-        scope,
-      },
-      timeout,
-      fetchUrl,
-      fetchOptions,
-      useFormData,
-    },
-    worker
-  );
-};
+// const fetchWithWorker = async (
+//   fetchUrl: string,
+//   audience: string,
+//   scope: string,
+//   fetchOptions: FetchOptions,
+//   timeout: number,
+//   worker?: Worker,
+//   useFormData?: boolean
+// ) => {
+//   if (!worker) {
+//     return;
+//   }
+//   return sendMessage(
+//     {
+//       auth: {
+//         audience,
+//         scope,
+//       },
+//       timeout,
+//       fetchUrl,
+//       fetchOptions,
+//       useFormData,
+//     },
+//     worker
+//   );
+// };
 
 export const switchFetch = async (
   fetchUrl: string,
@@ -80,19 +80,20 @@ export const switchFetch = async (
   timeout = DEFAULT_FETCH_TIMEOUT_MS
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> => {
-  if (worker) {
-    return fetchWithWorker(
-      fetchUrl,
-      audience,
-      scope,
-      fetchOptions,
-      timeout,
-      worker,
-      useFormData
-    );
-  } else {
-    return fetchWithoutWorker(fetchUrl, fetchOptions, timeout);
-  }
+  // if (worker) {
+  //   return fetchWithWorker(
+  //     fetchUrl,
+  //     audience,
+  //     scope,
+  //     fetchOptions,
+  //     timeout,
+  //     worker,
+  //     useFormData
+  //   );
+  // } else {
+  //   return fetchWithoutWorker(fetchUrl, fetchOptions, timeout);
+  // }
+  return fetchWithoutWorker(fetchUrl, fetchOptions, timeout);
 };
 
 export async function getJSON<T>(
