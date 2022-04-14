@@ -25,5 +25,5 @@
   "include": [
     "src"
   ],
-  "exclude": ["node_modules", "**/__tests__/*", "./dist/typings",]
+  "exclude": ["node_modules", "**/__tests__/*", "./dist"]
 }
