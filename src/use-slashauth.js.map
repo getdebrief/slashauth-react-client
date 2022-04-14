@@ -1,0 +1,1 @@
+{"version":3,"file":"use-slashauth.js","sourceRoot":"","sources":["use-slashauth.tsx"],"names":[],"mappings":";;;AAAA,gEAAwD;AAUjD,IAAM,YAAY,GAAG;IAC1B,IAAM,eAAe,GAAG,IAAA,gCAAW,GAAE,CAAC;IAEtC,OAAO;QACL,eAAe,iBAAA;QACf,OAAO,EAAE,eAAe,CAAC,OAAO;QAChC,QAAQ,EAAE,eAAe,CAAC,QAAQ;KACnC,CAAC;AACJ,CAAC,CAAC;AARW,QAAA,YAAY,gBAQvB"}
