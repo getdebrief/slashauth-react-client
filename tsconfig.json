@@ -9,7 +9,7 @@
     "moduleResolution": "node",
     "noImplicitAny": true,
     "downlevelIteration": true,
-    "jsx": "react-jsx"
+    "jsx": "react"
   },
   "exclude": ["./__tests__", "./dist/typings", "**/__mocks__/**"]
 }

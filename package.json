@@ -2,7 +2,8 @@
   "name": "@navvi/slashauth-react-client",
   "version": "0.1.1",
   "description": "React client for SlashAuth. Add auth to your web3 dApp",
-  "main": "index.js",
+  "main": "dist/slashauth-client-js.development.js",
+  "types": "dist/typings/index.d.ts",
   "scripts": {
     "dev": "rimraf dist && rollup -c --watch",
     "start": "npm run dev",
