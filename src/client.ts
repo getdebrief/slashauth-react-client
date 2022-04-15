@@ -9,7 +9,6 @@ import {
   validateCrypto,
   singlePromise,
   retryPromise,
-  runIframe,
 } from './utils';
 
 import { getUniqueScopes } from './scope';
@@ -55,14 +54,16 @@ import {
   LogoutOptions,
   LogoutUrlOptions,
   LoginNoRedirectNoPopupOptions,
+  GetNonceToSignOptions,
 } from './global';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // eslint-disable-next-line import/default
-import TokenWorker from './worker/token.worker.ts';
+// import TokenWorker from './worker/token.worker.ts';
 import { CacheKeyManifest } from './cache/key-manifest';
 import browserDeviceID from './device';
+import { getNonceToSign, loginWithSignedNonce } from './api';
 
 // type GetTokenSilentlyResult = TokenEndpointResponse & {
 //   decodedToken: ReturnType<typeof verifyIdToken>;
@@ -112,11 +113,6 @@ const cacheLocationBuilders: Record<string, () => ICache> = {
 const cacheFactory = (location: string) => {
   return cacheLocationBuilders[location];
 };
-
-/**
- * @ignore
- */
-const supportWebWorker = () => true;
 
 /**
  * @ignore
@@ -270,15 +266,15 @@ export default class SlashAuthClient {
     this.scope = getUniqueScopes(this.scope, 'offline_access');
 
     // Don't use web workers unless using refresh tokens in memory and not IE11
-    if (
-      typeof window !== 'undefined' &&
-      window.Worker &&
-      // this.options.useRefreshTokens &&
-      this.cacheLocation === CACHE_LOCATION_MEMORY &&
-      supportWebWorker()
-    ) {
-      this.worker = new TokenWorker();
-    }
+    // if (
+    //   typeof window !== 'undefined' &&
+    //   window.Worker &&
+    //   // this.options.useRefreshTokens &&
+    //   this.cacheLocation === CACHE_LOCATION_MEMORY &&
+    //   supportWebWorker()
+    // ) {
+    //   this.worker = new TokenWorker();
+    // }
 
     this.customOptions = getCustomInitialOptions(options);
   }
@@ -338,7 +334,7 @@ export default class SlashAuthClient {
 
     return verifyIdToken({
       iss: this.tokenIssuer,
-      aud: this.options.clientID,
+      aud: 'default',
       id_token,
       nonce,
       organizationId,
@@ -368,7 +364,7 @@ export default class SlashAuthClient {
 
   /**
    * ```js
-   * await auth0.buildAuthorizeUrl(options);
+   * await slashauth.buildAuthorizeUrl(options);
    * ```
    *
    * Builds an `/authorize` URL for loginWithRedirect using the parameters
@@ -533,7 +529,7 @@ export default class SlashAuthClient {
 
   /**
    * ```js
-   * const user = await slashauth.getUser();
+   * const user = await slashauth.getAccount();
    * ```
    *
    * Returns the user information if available (decoded
@@ -566,7 +562,7 @@ export default class SlashAuthClient {
 
   /**
    * ```js
-   * const claims = await auth0.getIdTokenClaims();
+   * const claims = await slashauth.getIdTokenClaims();
    * ```
    *
    * Returns all claims from the id_token if available.
@@ -597,7 +593,7 @@ export default class SlashAuthClient {
 
   /**
    * ```js
-   * await auth0.loginWithRedirect(options);
+   * await slashauth.loginWithRedirect(options);
    * ```
    *
    * Performs a redirect to `/authorize` using the parameters
@@ -908,6 +904,21 @@ export default class SlashAuthClient {
     }
   }
 
+  public async getNonceToSign(options: GetNonceToSignOptions): Promise<string> {
+    const queryParameters = {
+      address: options.address,
+      device_id: browserDeviceID,
+      client_id: this.options.clientID,
+    };
+
+    const nonceResult = await getNonceToSign({
+      baseUrl: getDomain(this.domainUrl),
+      ...queryParameters,
+    });
+
+    return nonceResult.nonce;
+  }
+
   /**
    *
    * @returns
@@ -937,19 +948,21 @@ export default class SlashAuthClient {
     const queryParameters = {
       address: options.address,
       signature: options.signature,
-      deviceID: browserDeviceID,
-      clientID: this.options.clientID,
+      device_id: browserDeviceID,
+      client_id: this.options.clientID,
     };
-    const requestURL = `${getDomain(
-      this.domainUrl
-    )}/loginWithSignedNonce?${createQueryParams(queryParameters)}`;
 
-    const authorizeTimeout = options.timeoutInSeconds;
-    const authResult = await runIframe(
-      requestURL,
-      this.domainUrl,
-      authorizeTimeout
-    );
+    //const authorizeTimeout = options.timeoutInSeconds;
+    // const authResult = await runIframe(
+    //   requestURL,
+    //   this.domainUrl,
+    //   authorizeTimeout
+    // );
+
+    const authResult = await loginWithSignedNonce({
+      baseUrl: getDomain(this.domainUrl),
+      ...queryParameters,
+    });
 
     // if (stateIn !== iframeResult.state) {
     //   throw new Error('Invalid state');
@@ -978,10 +991,7 @@ export default class SlashAuthClient {
 
     // const organizationId = options.organization || this.options.organization;
 
-    const decodedToken = await this._verifyIdToken(
-      authResult.id_token,
-      nonceIn
-    );
+    const decodedToken = await this._verifyIdToken(authResult.access_token);
 
     const cacheEntry = {
       ...authResult,

@@ -6,8 +6,6 @@ import 'core-js/es/array/includes';
 import 'core-js/es/string/includes';
 import 'core-js/es/set';
 import 'promise-polyfill/src/polyfill';
-import 'fast-text-encoding';
-import 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only';
 
 import SlashAuthClient from './client';
 import { SlashAuthClientOptions } from './global';

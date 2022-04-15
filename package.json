@@ -1,6 +1,6 @@
 {
   "name": "@navvi/slashauth-react-client",
-  "version": "0.1.2",
+  "version": "0.1.14",
   "description": "React client for SlashAuth. Add auth to your web3 dApp",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -68,9 +68,10 @@
     ]
   },
   "dependencies": {
-    "@navvi/react-use-metamask": "^0.1.8",
+    "@navvi/react-use-metamask": "^0.1.14",
     "browser-tabs-lock": "^1.2.15",
     "es-cookie": "^1.3.2",
+    "promise-polyfill": "8.2.3",
     "react": "^18.0.0",
     "uuid": "^8.3.2"
   }

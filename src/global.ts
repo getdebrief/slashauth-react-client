@@ -27,6 +27,10 @@ export interface BaseLoginOptions {
   [key: string]: any;
 }
 
+export interface GetNonceToSignOptions extends BaseLoginOptions {
+  address: string;
+}
+
 export interface SlashAuthClientOptions extends BaseLoginOptions {
   /*
     The domain for logging in. Will likely be companyname.slashauth.xyz
@@ -126,9 +130,33 @@ export interface JWTVerifyOptions {
   now?: number;
 }
 
+export interface GetNonceToSignEndpointOptions {
+  baseUrl: string;
+  address: string;
+  client_id: string;
+  device_id: string;
+}
+
+export interface LoginWithSignedNonceOptions
+  extends GetNonceToSignEndpointOptions {
+  signature: string;
+}
+
+export interface GetNonceToSignResponse {
+  nonce: string;
+}
+
+export interface LoginWithSignedNonceResponse {
+  access_token: string;
+  refresh_token: string;
+  client_id: string;
+  scopes: string[];
+  expires_in: number;
+}
+
 export interface TokenEndpointOptions {
   baseUrl: string;
-  client_id: string;
+  clientID: string;
   grant_type: string;
   timeout?: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
