@@ -1,6 +1,6 @@
 {
   "name": "@navvi/slashauth-react-client",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "React client for SlashAuth. Add auth to your web3 dApp",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
